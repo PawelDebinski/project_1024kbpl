@@ -18,7 +18,7 @@ public class Main {
         products.add(new Boots(3L, "Boots", 10.49, 5, "yellow", 4, "40", false));
         products.add(new Boots(4L, "Boots2", 12.99, 5, "green", 22, "40", true));
 
-        ProductDaoImpl productDao = new ProductDaoImpl("D:\\JAVA\\IntelliJ_WORKSPACE\\proj24kbpl\\src\\main\\resources\\products.txt");
+        ProductDaoImpl productDao = new ProductDaoImpl("src\\main\\resources\\products.txt");
         productDao.saveProducts(products);
         System.out.println();
         for(Product product: products) {
@@ -70,7 +70,7 @@ public class Main {
         users.add(new User(2L, "pablo", "admin"));
         users.add(new User(3L, "marco", "admin"));
 
-        UserDaoImpl userDao = new UserDaoImpl("D:\\JAVA\\IntelliJ_WORKSPACE\\proj24kbpl\\src\\main\\resources\\users.txt");
+        UserDaoImpl userDao = new UserDaoImpl("src\\main\\resources\\users.txt");
 
         userDao.saveUsers(users);
         for(User user: users) {
