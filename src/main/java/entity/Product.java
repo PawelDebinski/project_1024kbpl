@@ -1,14 +1,17 @@
 package entity;
 
 public class Product {
-    private String id;
+
+    // == fields ==
+    private Long id;
     private String productName;
     private double price;
     private double weight;
     private String color;
     private int productCount;
 
-    public Product(String id, String productName, double price, double weight, String color, int productCount) {
+    // == constructors ==
+    public Product(Long id, String productName, double price, double weight, String color, int productCount) {
         this.id = id;
         this.productName = productName;
         this.price = price;
@@ -17,7 +20,8 @@ public class Product {
         this.productCount = productCount;
     }
 
-    public String getId() {
+    // == public methods ==
+    public Long getId() {
         return id;
     }
 
@@ -51,13 +55,11 @@ public class Product {
 
     @Override
     public String toString() {
-        return "entity.Product{" +
-                "id='" + id + '\'' +
-                ", productName='" + productName + '\'' +
-                ", price=" + price +
-                ", weight=" + weight +
-                ", color='" + color + '\'' +
-                ", productCount=" + productCount +
-                '}';
+        return id + "," +
+                productName + "," +
+                price + "," +
+                weight + "," +
+                color + "," +
+                productCount + ",";
     }
 }

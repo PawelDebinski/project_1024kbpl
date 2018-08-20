@@ -1,17 +1,21 @@
 package entity;
 
 public class User {
-    private String id;
+
+    // == fields ==
+    private Long id;
     private String login;
     private String password;
 
-    public User(String id, String login, String password) {
+    // == constructors ==
+    public User(Long id, String login, String password) {
         this.id = id;
         this.login = login;
         this.password = password;
     }
 
-    public String getId() {
+    // == public methods ==
+    public Long getId() {
         return id;
     }
 
@@ -25,10 +29,8 @@ public class User {
 
     @Override
     public String toString() {
-        return "entity.User{" +
-                "id='" + id + '\'' +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                '}';
+        return id + "," +
+                login + "," +
+                password;
     }
 }

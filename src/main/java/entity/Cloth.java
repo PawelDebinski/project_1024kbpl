@@ -1,15 +1,19 @@
 package entity;
 
 public class Cloth extends Product{
+
+    // == fields
     private String size;
     private String material;
 
-    public Cloth(String id, String productName, double price, double weight, String color, int productCount, String size, String material) {
+    // == constructors ==
+    public Cloth(long id, String productName, double price, double weight, String color, int productCount, String size, String material) {
         super(id, productName, price, weight, color, productCount);
         this.size = size;
         this.material = material;
     }
 
+    // == public methods ==
     public String getSize() {
         return size;
     }
@@ -21,7 +25,7 @@ public class Cloth extends Product{
     @Override
     public String toString() {
         return super.toString() +
-                " size=" + size +
-                " material='" +material +'\'';
+                size + "," +
+                material;
     }
 }
