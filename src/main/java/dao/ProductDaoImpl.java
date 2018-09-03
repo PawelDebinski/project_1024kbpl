@@ -2,6 +2,7 @@ package dao;
 
 import api.ProductDao;
 import entity.Product;
+import entity.parser.ProductParser;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -10,21 +11,21 @@ import java.util.List;
 public class ProductDaoImpl implements ProductDao {
 
     // == fields ==
-    String fileName;
+    private final String fileName;
+    private final String productType;
 
     // == constructors ==
-    public ProductDaoImpl(String fileName) {
+    public ProductDaoImpl(String fileName, String productType) {
         this.fileName = fileName;
+        this.productType = productType;
     }
 
     // == public methods ==
     @Override
     public void saveProduct(Product product) {
-        try(PrintWriter pw = new PrintWriter( new FileOutputStream(fileName, true))) {
-            pw.write(product.toString() + "\n");
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found " + e.getMessage());
-        }
+        List<Product> products = getAllProducts();
+        products.add(product);
+        saveProducts(products);
     }
 
     @Override
@@ -41,13 +42,13 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void removeProductById(Long productId) {
-        List<Product> productList = getAllProducts();
-        for(Product product : productList) {
+        List<Product> products = getAllProducts();
+
+        for(Product product : products) {
             if(product.getId().equals(productId)) {
-                productList.remove(product);
-                saveProducts(productList);
-                break;
+                products.remove(product);
             }
+            saveProducts(products);
         }
     }
 
@@ -57,9 +58,8 @@ public class ProductDaoImpl implements ProductDao {
         for(Product product : productList) {
             if(product.getProductName().equals(productName)) {
                 productList.remove(product);
-                saveProducts(productList);
-                break;
             }
+            saveProducts(productList);
         }
     }
 
@@ -69,10 +69,10 @@ public class ProductDaoImpl implements ProductDao {
         try(BufferedReader bw = new BufferedReader(new FileReader(fileName))) {
             String line;
             while((line = bw.readLine()) != null) {
-                String[] array = line.split(",");
-                Product product = new Product(Long.parseLong(array[0]), array[1], Double.parseDouble(array[2]),
-                        Double.parseDouble(array[3]), array[4], Integer.parseInt(array[5]));
-                productList.add(product);
+                Product product = ProductParser.convertStringToProduct(line, productType);
+                if(product != null) {
+                    productList.add(product);
+                }
             }
         } catch (FileNotFoundException e) {
             System.out.println("File not found " + e.getMessage());
@@ -86,6 +86,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public Product getProductById(Long productId) {
         List<Product> productList = getAllProducts();
+
         for(Product product : productList) {
             if(product.getId().equals(productId)) {
                 return product;
@@ -97,6 +98,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public Product getProductByProductName(String productName) {
         List<Product> productList = getAllProducts();
+
         for(Product product : productList) {
             if(product.getProductName().equals(productName)) {
                 return product;

@@ -25,7 +25,7 @@ public class Boots extends Product{
     @Override
     public String toString() {
         return super.toString() +
-                size + "," +
-                isNaturalSkin;
+                PRODUCT_SEPARATOR + size +
+                PRODUCT_SEPARATOR + isNaturalSkin;
     }
 }

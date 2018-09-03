@@ -2,6 +2,7 @@ package dao;
 
 import api.UserDao;
 import entity.User;
+import entity.parser.UserParser;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,31 +10,37 @@ import java.util.List;
 
 public class UserDaoImpl implements UserDao {
 
+    // == constants ==
+    public static final String FILE_NAME = "users.txt";
+
     // == fields ==
-    String fileName;
+    private static UserDaoImpl instance = null;
 
     // == constructors ==
-    public UserDaoImpl(String fileName) {
-        this.fileName = fileName;
+    private UserDaoImpl() {
     }
 
     // == public methods ==
+    public static UserDaoImpl getInstance() {
+        if(instance == null) {
+            instance = new UserDaoImpl();
+        }
+        return instance;
+    }
+
     @Override
     public void saveUser(User user) {
-        try(PrintWriter pw = new PrintWriter( new FileOutputStream(fileName, true))) {
-            pw.write(user.toString() + "\n");
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found " + e.getMessage());
-        }
+        List<User> users = getAllUsers();
+        users.add(user);
+        saveUsers(users);
     }
 
     @Override
     public void saveUsers(List<User> users) {
-        try(PrintWriter pw = new PrintWriter( new FileOutputStream(fileName, false))) {
+        try(PrintWriter pw = new PrintWriter( new FileOutputStream(FILE_NAME, false))) {
             for(User user : users) {
                 pw.write(user.toString() + "\n");
             }
-
         } catch (FileNotFoundException e) {
             System.out.println("File not found " + e.getMessage());
         }
@@ -42,11 +49,11 @@ public class UserDaoImpl implements UserDao {
     @Override
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
-        try(BufferedReader bw = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while((line = bw.readLine()) != null) {
-                String[] array = line.split(",");
-                User user = new User(Long.parseLong(array[0]), array[1], array[2]);
+
+        try(BufferedReader bw = new BufferedReader(new FileReader(FILE_NAME))) {
+            String nextLine;
+            while((nextLine = bw.readLine()) != null) {
+                User user = UserParser.StringToUser(nextLine);
                 userList.add(user);
             }
         } catch (FileNotFoundException e) {
@@ -60,6 +67,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUserByLogin(String login) {
         List<User> userList = getAllUsers();
+
         for(User user : userList) {
             if(user.getLogin().equals(login)) {
                 return user;
@@ -71,6 +79,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public User getUserById(Long userId) {
         List<User> userList = getAllUsers();
+
         for(User user : userList) {
             if(user.getId().equals(userId)) {
                 return user;
@@ -82,6 +91,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void removeUserByLogin(String login) {
         List<User> userList = getAllUsers();
+
         for(User user : userList) {
             if(user.getLogin().equals(login)) {
                 userList.remove(user);
@@ -94,6 +104,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void removeUserById(Long id) {
         List<User> userList = getAllUsers();
+
         for(User user : userList) {
             if(user.getId().equals(id)) {
                 userList.remove(user);

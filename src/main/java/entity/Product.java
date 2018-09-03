@@ -2,6 +2,9 @@ package entity;
 
 public class Product {
 
+    // == constants ==
+    public static final String PRODUCT_SEPARATOR = ",";
+
     // == fields ==
     private Long id;
     private String productName;
@@ -55,11 +58,11 @@ public class Product {
 
     @Override
     public String toString() {
-        return id + "," +
-                productName + "," +
-                price + "," +
-                weight + "," +
-                color + "," +
-                productCount + ",";
+        return id + PRODUCT_SEPARATOR +
+                productName + PRODUCT_SEPARATOR +
+                price + PRODUCT_SEPARATOR +
+                weight + PRODUCT_SEPARATOR +
+                color + PRODUCT_SEPARATOR +
+                productCount;
     }
 }

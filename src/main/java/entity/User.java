@@ -2,6 +2,9 @@ package entity;
 
 public class User {
 
+    // == constants ==
+    public static final String USER_SEPARATOR = ",";
+
     // == fields ==
     private Long id;
     private String login;
@@ -29,8 +32,8 @@ public class User {
 
     @Override
     public String toString() {
-        return id + "," +
-                login + "," +
+        return id + USER_SEPARATOR +
+                login + USER_SEPARATOR +
                 password;
     }
 }
