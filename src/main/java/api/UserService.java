@@ -1,18 +1,24 @@
 package api;
 
 import entity.User;
-import exception.UserLoginAlreadyExistException;
-import exception.UserShortLengthLoginException;
-import exception.UserShortLengthPasswordException;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface UserService {
 
-    List<User> getAllUsers();
+    boolean addUser(User user);
 
-    void addUser(User user) throws UserShortLengthPasswordException, UserLoginAlreadyExistException, UserShortLengthLoginException;
+    void removeUserById(Long user) throws IOException;
 
-    void removeUserById(Long user);
+    List<User> getAllUsers() throws IOException;
+    User getUserById(Long id) throws IOException;
+    User getUserByLogin(String login) throws IOException;
+
+    boolean isCorrectLoginAndPassword(String login, String password);
+
+
+
+
 
 }
