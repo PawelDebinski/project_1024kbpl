@@ -29,25 +29,23 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void saveUser(User user) {
+    public void saveUser(User user) throws IOException {
         List<User> users = getAllUsers();
         users.add(user);
         saveUsers(users);
     }
 
     @Override
-    public void saveUsers(List<User> users) {
+    public void saveUsers(List<User> users) throws FileNotFoundException {
         try(PrintWriter pw = new PrintWriter( new FileOutputStream(FILE_NAME, false))) {
             for(User user : users) {
                 pw.write(user.toString() + "\n");
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found " + e.getMessage());
         }
     }
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers() throws IOException {
         List<User> userList = new ArrayList<>();
 
         try(BufferedReader bw = new BufferedReader(new FileReader(FILE_NAME))) {
@@ -56,40 +54,12 @@ public class UserDaoImpl implements UserDao {
                 User user = UserParser.StringToUser(nextLine);
                 userList.add(user);
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found " + e.getMessage());
-        } catch (IOException e) {
-            e.getMessage();
         }
         return userList;
     }
 
     @Override
-    public User getUserByLogin(String login) {
-        List<User> userList = getAllUsers();
-
-        for(User user : userList) {
-            if(user.getLogin().equals(login)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public User getUserById(Long userId) {
-        List<User> userList = getAllUsers();
-
-        for(User user : userList) {
-            if(user.getId().equals(userId)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void removeUserByLogin(String login) {
+    public void removeUserByLogin(String login) throws IOException {
         List<User> userList = getAllUsers();
 
         for(User user : userList) {
@@ -102,7 +72,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void removeUserById(Long id) {
+    public void removeUserById(Long id) throws IOException {
         List<User> userList = getAllUsers();
 
         for(User user : userList) {

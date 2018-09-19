@@ -15,7 +15,7 @@ public interface UserService {
     User getUserById(Long id) throws IOException;
     User getUserByLogin(String login) throws IOException;
 
-    boolean isCorrectLoginAndPassword(String login, String password);
+    boolean isCorrectLoginAndPassword(String login, String password) throws IOException;
 
 
 

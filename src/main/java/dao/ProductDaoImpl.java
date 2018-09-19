@@ -22,26 +22,23 @@ public class ProductDaoImpl implements ProductDao {
 
     // == public methods ==
     @Override
-    public void saveProduct(Product product) {
+    public void saveProduct(Product product) throws IOException {
         List<Product> products = getAllProducts();
         products.add(product);
         saveProducts(products);
     }
 
     @Override
-    public void saveProducts(List<Product> products) {
+    public void saveProducts(List<Product> products) throws FileNotFoundException {
         try(PrintWriter pw = new PrintWriter( new FileOutputStream(fileName, false))) {
             for(Product product: products) {
                 pw.write(product.toString() + "\n");
             }
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found " + e.getMessage());
         }
     }
 
     @Override
-    public void removeProductById(Long productId) {
+    public void removeProductById(Long productId) throws IOException {
         List<Product> products = getAllProducts();
 
         for(Product product : products) {
@@ -53,7 +50,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public void removeProductByName(String productName) {
+    public void removeProductByName(String productName) throws IOException {
         List<Product> productList = getAllProducts();
         for(Product product : productList) {
             if(product.getProductName().equals(productName)) {
@@ -64,7 +61,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts() throws IOException {
         List<Product> productList = new ArrayList<>();
         try(BufferedReader bw = new BufferedReader(new FileReader(fileName))) {
             String line;
@@ -74,36 +71,8 @@ public class ProductDaoImpl implements ProductDao {
                     productList.add(product);
                 }
             }
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found " + e.getMessage());
-        } catch (IOException e) {
-            e.getMessage();
         }
         return productList;
     }
 
-
-    @Override
-    public Product getProductById(Long productId) {
-        List<Product> productList = getAllProducts();
-
-        for(Product product : productList) {
-            if(product.getId().equals(productId)) {
-                return product;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public Product getProductByProductName(String productName) {
-        List<Product> productList = getAllProducts();
-
-        for(Product product : productList) {
-            if(product.getProductName().equals(productName)) {
-                return product;
-            }
-        }
-        return null;
-    }
 }
